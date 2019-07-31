@@ -8,10 +8,16 @@ Created on Mon Jul 22 22:03:24 2019
 
 import numpy as np
 import cv2
+import pickle
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-#recognizer.read("trainner.yml")
+recognizer.read("trainner.yml")
+
+labels = {"person_name": 1}
+with open("labels.pickle", 'rb') as f:
+	og_labels = pickle.load(f)
+	labels = {v:k for k,v in og_labels.items()}
 
 cap = cv2.VideoCapture(0)
 # Define el codec y crea el objeto VideoWriter
@@ -34,7 +40,7 @@ while(True):
         end_cord_x = x + w
         end_cord_y = y + h
         cv2.rectangle(frame, (x, y), (end_cord_x, end_cord_y), color, stroke)
-        cv2.putText(frame, 'Julian Marquez', (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255,255,255), lineType=cv2.LINE_AA)
+        cv2.putText(frame, labels[id_], (x,y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255,255,255), lineType=cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(20) & 0xFF == ord('q'):

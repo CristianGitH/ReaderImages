@@ -8,9 +8,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 image_dir = os.path.join(BASE_DIR, "images")
 
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 
+print(face_cascade)
 
 current_id = 0
 label_ids = {}
@@ -32,7 +33,7 @@ for root, dirs, files in os.walk(image_dir):
             pill_image = Image.open(path).convert("L")
             image_array = np.array(pill_image, "uint8")
             print(image_array)
-            faces = face_cascade.detectMultiscale(image_array, scalefcator=1.5, minNeighbors = 5)
+            faces = face_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors = 5)
 
             for (x,y,w,h) in faces:
                 roi =image_array [y:y+h, x:x+w]
